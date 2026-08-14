@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.example.board.mapper.CommentMapper">
+
+    <select id="getCommentList" resultType="CommentVO">
+        SELECT
+            comment_seq       AS commentSeq,
+            user_seq          AS userSeq,
+            board_seq         AS boardSeq,
+            comment_content   AS commentContent,
+            comment_writedate AS commentWritedate,
+            comment_update    AS commentUpdate
+        FROM comment
+        WHERE board_seq = #{boardSeq}
+        ORDER BY comment_writedate ASC
+    </select>
+
+    <insert id="insertComment" useGeneratedKeys="true" keyProperty="commentSeq">
+        INSERT INTO comment (user_seq, board_seq, comment_content)
+        VALUES (#{userSeq}, #{boardSeq}, #{commentContent})
+    </insert>
+
+    <update id="updateComment">
+        UPDATE comment
+        SET comment_content = #{commentContent}
+        WHERE comment_seq = #{commentSeq}
+    </update>
+
+    <delete id="deleteComment">
+        DELETE FROM comment
+        WHERE comment_seq = #{commentSeq}
+    </delete>
+</mapper>
