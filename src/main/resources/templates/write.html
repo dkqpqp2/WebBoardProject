@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>글쓰기</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+<header>
+    <h1><a th:href="@{/board/list}">정보공유 게시판</a></h1>
+</header>
+
+<main>
+    <h2>글쓰기</h2>
+    <form th:action="@{/board/write}" method="post">
+        <input type="hidden" name="userSeq" value="1">
+
+        <label>카테고리
+            <select name="category">
+                <option th:each="entry : ${categoryMap}" th:value="${entry.key}" th:text="${entry.value}"></option>
+            </select>
+        </label>
+
+        <label>제목
+            <input type="text" name="boardTitle" required>
+        </label>
+
+        <label>내용
+            <textarea name="boardContent" rows="10" required></textarea>
+        </label>
+
+        <button type="submit">등록</button>
+    </form>
+</main>
+</body>
+</html>

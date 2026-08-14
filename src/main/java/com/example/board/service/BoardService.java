@@ -17,7 +17,12 @@ public class BoardService {
         return boardMapper.getBoardList();
     }
 
+    public List<BoardVO> getBoardListByCategory(String category) {
+        return boardMapper.getBoardListByCategory(category);
+    }
+
     public BoardVO getBoardDetail(int boardSeq) {
+        boardMapper.increaseViewCount(boardSeq);
         return boardMapper.getBoardDetail(boardSeq);
     }
 

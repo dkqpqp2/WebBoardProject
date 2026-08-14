@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>정보공유 게시판</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+<header>
+    <h1><a th:href="@{/board/list}">정보공유 게시판</a></h1>
+    <nav>
+        <a th:href="@{/board/list}"
+           th:classappend="${selectedCategory == null} ? 'active' : ''">전체</a>
+        <a th:each="entry : ${categoryMap}"
+           th:href="@{/board/list(category=${entry.key})}"
+           th:text="${entry.value}"
+           th:classappend="${selectedCategory == entry.key} ? 'active' : ''"></a>
+    </nav>
+</header>
+
+<main>
+    <table>
+        <thead>
+        <tr>
+            <th>번호</th>
+            <th>카테고리</th>
+            <th>제목</th>
+            <th>조회수</th>
+            <th>작성일</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="board : ${boardList}">
+            <td th:text="${board.boardSeq}"></td>
+            <td th:text="${categoryMap.get(board.category)}"></td>
+            <td>
+                <a th:href="@{/board/detail/{id}(id=${board.boardSeq})}" th:text="${board.boardTitle}"></a>
+            </td>
+            <td th:text="${board.viewCount}"></td>
+            <td th:text="${#temporals.format(board.boardWritedate, 'yyyy-MM-dd HH:mm')}"></td>
+        </tr>
+        <tr th:if="${#lists.isEmpty(boardList)}">
+            <td colspan="5">게시글이 없습니다.</td>
+        </tr>
+        </tbody>
+    </table>
+
+    <a class="btn" th:href="@{/board/write}">글쓰기</a>
+</main>
+</body>
+</html>

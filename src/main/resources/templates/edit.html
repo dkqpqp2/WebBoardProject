@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>글수정</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+<header>
+    <h1><a th:href="@{/board/list}">정보공유 게시판</a></h1>
+</header>
+
+<main>
+    <h2>글수정</h2>
+    <form th:action="@{/board/edit/{id}(id=${board.boardSeq})}" method="post">
+        <label>카테고리
+            <select name="category">
+                <option th:each="entry : ${categoryMap}"
+                        th:value="${entry.key}"
+                        th:text="${entry.value}"
+                        th:selected="${entry.key == board.category}"></option>
+            </select>
+        </label>
+
+        <label>제목
+            <input type="text" name="boardTitle" th:value="${board.boardTitle}" required>
+        </label>
+
+        <label>내용
+            <textarea name="boardContent" rows="10" th:text="${board.boardContent}" required></textarea>
+        </label>
+
+        <button type="submit">수정 완료</button>
+    </form>
+</main>
+</body>
+</html>

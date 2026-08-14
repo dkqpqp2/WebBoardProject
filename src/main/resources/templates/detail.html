@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="${board.boardTitle}">게시글</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+<header>
+    <h1><a th:href="@{/board/list}">정보공유 게시판</a></h1>
+</header>
+
+<main>
+    <article>
+        <h2 th:text="${board.boardTitle}"></h2>
+        <p class="meta">
+            <span th:text="${categoryMap.get(board.category)}"></span> ·
+            조회 <span th:text="${board.viewCount}"></span> ·
+            <span th:text="${#temporals.format(board.boardWritedate, 'yyyy-MM-dd HH:mm')}"></span>
+        </p>
+        <div class="content" th:text="${board.boardContent}"></div>
+
+        <div class="actions">
+            <a th:href="@{/board/edit/{id}(id=${board.boardSeq})}">수정</a>
+            <form th:action="@{/board/delete/{id}(id=${board.boardSeq})}" method="post" style="display:inline">
+                <button type="submit" onclick="return confirm('삭제하시겠습니까?')">삭제</button>
+            </form>
+        </div>
+    </article>
+
+    <section class="comments">
+        <h3>댓글 <span th:text="${#lists.size(commentList)}"></span></h3>
+        <ul>
+            <li th:each="comment : ${commentList}">
+                <span th:text="${comment.commentContent}"></span>
+                <span class="meta" th:text="${#temporals.format(comment.commentWritedate, 'yyyy-MM-dd HH:mm')}"></span>
+                <form th:action="@{/board/{boardSeq}/comment/{commentSeq}/delete(boardSeq=${board.boardSeq},commentSeq=${comment.commentSeq})}"
+                      method="post" style="display:inline">
+                    <button type="submit" onclick="return confirm('댓글을 삭제하시겠습니까?')">삭제</button>
+                </form>
+            </li>
+            <li th:if="${#lists.isEmpty(commentList)}">아직 댓글이 없습니다.</li>
+        </ul>
+
+        <form th:action="@{/board/{id}/comment(id=${board.boardSeq})}" method="post">
+            <input type="hidden" name="userSeq" value="1">
+            <textarea name="commentContent" rows="2" placeholder="댓글을 입력하세요" required></textarea>
+            <button type="submit">댓글 등록</button>
+        </form>
+    </section>
+</main>
+</body>
+</html>

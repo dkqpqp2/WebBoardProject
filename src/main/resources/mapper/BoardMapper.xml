@@ -19,6 +19,21 @@
         ORDER BY board_writedate DESC
     </select>
 
+    <select id="getBoardListByCategory" resultType="BoardVO">
+        SELECT
+            board_seq       AS boardSeq,
+            user_seq        AS userSeq,
+            category,
+            board_title     AS boardTitle,
+            board_content   AS boardContent,
+            view_count      AS viewCount,
+            board_writedate AS boardWritedate,
+            board_update    AS boardUpdate
+        FROM board
+        WHERE category = #{category}
+        ORDER BY board_writedate DESC
+    </select>
+
     <select id="getBoardDetail" resultType="BoardVO">
         SELECT
             board_seq       AS boardSeq,
@@ -50,4 +65,10 @@
         DELETE FROM board
         WHERE board_seq = #{boardSeq}
     </delete>
+
+    <update id="increaseViewCount">
+        UPDATE board
+        SET view_count = view_count + 1
+        WHERE board_seq = #{boardSeq}
+    </update>
 </mapper>
