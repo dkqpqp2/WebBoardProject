@@ -58,7 +58,7 @@ public class BoardViewController {
         model.addAttribute("boardList", boardList);
         model.addAttribute("categoryMap", CATEGORY_MAP);
         model.addAttribute("selectedCategory", category);
-        return "list";
+        return "board/list";
     }
 
     @GetMapping("/board/detail/{boardSeq}")
@@ -66,13 +66,13 @@ public class BoardViewController {
         model.addAttribute("board", boardService.getBoardDetail(boardSeq));
         model.addAttribute("commentList", commentService.getCommentList(boardSeq));
         model.addAttribute("categoryMap", CATEGORY_MAP);
-        return "detail";
+        return "board/detail";
     }
 
     @GetMapping("/board/write")
     public String writeForm(Model model) {
         model.addAttribute("categoryMap", CATEGORY_MAP);
-        return "write";
+        return "board/write";
     }
 
     @PostMapping("/board/write")
@@ -85,7 +85,7 @@ public class BoardViewController {
     public String editForm(@PathVariable int boardSeq, Model model) {
         model.addAttribute("board", boardService.getBoardDetail(boardSeq));
         model.addAttribute("categoryMap", CATEGORY_MAP);
-        return "edit";
+        return "board/edit";
     }
 
     @PostMapping("/board/edit/{boardSeq}")
