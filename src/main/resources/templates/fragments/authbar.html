@@ -1,0 +1,12 @@
+<div th:fragment="authbar" class="authbar">
+    <span th:if="${loginUser != null}">
+        <span th:text="${loginUser.userName} + '님 안녕하세요'"></span>
+        <form th:action="@{/user/logout}" method="post" style="display:inline">
+            <button type="submit">로그아웃</button>
+        </form>
+    </span>
+    <span th:if="${loginUser == null}">
+        <a th:href="@{/user/login}">로그인</a>
+        <a th:href="@{/user/signup}">회원가입</a>
+    </span>
+</div>

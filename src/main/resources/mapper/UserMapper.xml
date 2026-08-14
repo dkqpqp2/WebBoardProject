@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.example.board.mapper.UserMapper">
+
+    <select id="findByUserId" resultType="UserVO">
+        SELECT
+            user_seq   AS userSeq,
+            user_id    AS userId,
+            user_pw    AS userPw,
+            user_name  AS userName,
+            role,
+            join_date  AS joinDate
+        FROM user
+        WHERE user_id = #{userId}
+    </select>
+
+    <insert id="insertUser" useGeneratedKeys="true" keyProperty="userSeq">
+        INSERT INTO user (user_id, user_pw, user_name, role)
+        VALUES (#{userId}, #{userPw}, #{userName}, 'USER')
+    </insert>
+
+</mapper>

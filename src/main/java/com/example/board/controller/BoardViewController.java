@@ -4,6 +4,8 @@ import com.example.board.service.BoardService;
 import com.example.board.service.CommentService;
 import com.example.board.vo.BoardVO;
 import com.example.board.vo.CommentVO;
+import com.example.board.vo.UserVO;
+import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -70,47 +72,82 @@ public class BoardViewController {
     }
 
     @GetMapping("/board/write")
-    public String writeForm(Model model) {
+    public String writeForm(Model model, HttpSession session) {
+        if (getLoginUser(session) == null) {
+            return "redirect:/user/login";
+        }
         model.addAttribute("categoryMap", CATEGORY_MAP);
         return "board/write";
     }
 
     @PostMapping("/board/write")
-    public String write(@ModelAttribute BoardVO boardVO) {
+    public String write(@ModelAttribute BoardVO boardVO, HttpSession session) {
+        UserVO loginUser = getLoginUser(session);
+        if (loginUser == null) {
+            return "redirect:/user/login";
+        }
+        boardVO.setUserSeq(loginUser.getUserSeq());
         int boardSeq = boardService.insertBoard(boardVO);
         return "redirect:/board/detail/" + boardSeq;
     }
 
     @GetMapping("/board/edit/{boardSeq}")
-    public String editForm(@PathVariable int boardSeq, Model model) {
-        model.addAttribute("board", boardService.getBoardDetail(boardSeq));
+    public String editForm(@PathVariable int boardSeq, Model model, HttpSession session) {
+        BoardVO board = boardService.getBoardDetail(boardSeq);
+        if (!isOwner(session, board)) {
+            return "redirect:/board/detail/" + boardSeq;
+        }
+        model.addAttribute("board", board);
         model.addAttribute("categoryMap", CATEGORY_MAP);
         return "board/edit";
     }
 
     @PostMapping("/board/edit/{boardSeq}")
-    public String edit(@PathVariable int boardSeq, @ModelAttribute BoardVO boardVO) {
+    public String edit(@PathVariable int boardSeq, @ModelAttribute BoardVO boardVO, HttpSession session) {
+        if (!isOwner(session, boardService.getBoardDetail(boardSeq))) {
+            return "redirect:/board/detail/" + boardSeq;
+        }
         boardVO.setBoardSeq(boardSeq);
         boardService.updateBoard(boardVO);
         return "redirect:/board/detail/" + boardSeq;
     }
 
     @PostMapping("/board/delete/{boardSeq}")
-    public String delete(@PathVariable int boardSeq) {
+    public String delete(@PathVariable int boardSeq, HttpSession session) {
+        if (!isOwner(session, boardService.getBoardDetail(boardSeq))) {
+            return "redirect:/board/detail/" + boardSeq;
+        }
         boardService.deleteBoard(boardSeq);
         return "redirect:/board/list";
     }
 
     @PostMapping("/board/{boardSeq}/comment")
-    public String addComment(@PathVariable int boardSeq, @ModelAttribute CommentVO commentVO) {
+    public String addComment(@PathVariable int boardSeq, @ModelAttribute CommentVO commentVO, HttpSession session) {
+        UserVO loginUser = getLoginUser(session);
+        if (loginUser == null) {
+            return "redirect:/user/login";
+        }
         commentVO.setBoardSeq(boardSeq);
+        commentVO.setUserSeq(loginUser.getUserSeq());
         commentService.insertComment(commentVO);
         return "redirect:/board/detail/" + boardSeq;
     }
 
     @PostMapping("/board/{boardSeq}/comment/{commentSeq}/delete")
-    public String deleteComment(@PathVariable int boardSeq, @PathVariable int commentSeq) {
+    public String deleteComment(@PathVariable int boardSeq, @PathVariable int commentSeq, HttpSession session) {
+        if (getLoginUser(session) == null) {
+            return "redirect:/user/login";
+        }
         commentService.deleteComment(commentSeq);
         return "redirect:/board/detail/" + boardSeq;
+    }
+
+    private UserVO getLoginUser(HttpSession session) {
+        return (UserVO) session.getAttribute("loginUser");
+    }
+
+    private boolean isOwner(HttpSession session, BoardVO board) {
+        UserVO loginUser = getLoginUser(session);
+        return loginUser != null && loginUser.getUserSeq() == board.getUserSeq();
     }
 }

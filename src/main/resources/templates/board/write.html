@@ -7,14 +7,13 @@
 </head>
 <body>
 <header>
+    <div th:replace="~{fragments/authbar :: authbar}"></div>
     <h1><a th:href="@{/board/list}">정보공유 게시판</a></h1>
 </header>
 
 <main>
     <h2>글쓰기</h2>
     <form th:action="@{/board/write}" method="post">
-        <input type="hidden" name="userSeq" value="1">
-
         <label>카테고리
             <select name="category">
                 <option th:each="entry : ${categoryMap}" th:value="${entry.key}" th:text="${entry.value}"></option>

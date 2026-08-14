@@ -9,9 +9,27 @@ header {
     background: #2f3b52;
     color: #fff;
     padding: 16px 24px;
+    position: relative;
 }
 header h1 { margin: 0 0 12px 0; font-size: 20px; }
 header h1 a { color: #fff; text-decoration: none; }
+
+.authbar {
+    position: absolute;
+    top: 16px;
+    right: 24px;
+    font-size: 13px;
+    color: #d8dee9;
+}
+.authbar a { color: #d8dee9; margin-left: 8px; text-decoration: none; }
+.authbar a:hover { text-decoration: underline; }
+.authbar button {
+    margin: 0 0 0 8px;
+    padding: 2px 8px;
+    font-size: 12px;
+    background: transparent;
+    border: 1px solid #6b7a99;
+}
 nav a {
     display: inline-block;
     color: #d8dee9;
@@ -53,7 +71,7 @@ td a:hover { text-decoration: underline; }
 .btn:hover, button:hover { background: #4a5a7a; }
 
 form label { display: block; margin-bottom: 14px; font-size: 14px; color: #444; }
-form input[type=text], form textarea, form select {
+form input[type=text], form input[type=password], form textarea, form select {
     display: block;
     width: 100%;
     margin-top: 6px;
