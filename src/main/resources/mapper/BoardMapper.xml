@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.example.board.mapper.BoardMapper">
+
+    <select id="getBoardList" resultType="BoardVO">
+        SELECT
+            board_seq       AS boardSeq,
+            user_seq        AS userSeq,
+            category,
+            board_title     AS boardTitle,
+            board_content   AS boardContent,
+            view_count      AS viewCount,
+            board_writedate AS boardWritedate,
+            board_update    AS boardUpdate
+        FROM board
+        ORDER BY board_writedate DESC
+    </select>
+
+    <select id="getBoardDetail" resultType="BoardVO">
+        SELECT
+            board_seq       AS boardSeq,
+            user_seq        AS userSeq,
+            category,
+            board_title     AS boardTitle,
+            board_content   AS boardContent,
+            view_count      AS viewCount,
+            board_writedate AS boardWritedate,
+            board_update    AS boardUpdate
+        FROM board
+        WHERE board_seq = #{boardSeq}
+    </select>
+
+    <insert id="insertBoard" useGeneratedKeys="true" keyProperty="boardSeq">
+        INSERT INTO board (user_seq, category, board_title, board_content)
+        VALUES (#{userSeq}, #{category}, #{boardTitle}, #{boardContent})
+    </insert>
+
+    <update id="updateBoard">
+        UPDATE board
+        SET board_title   = #{boardTitle},
+            board_content = #{boardContent},
+            category      = #{category}
+        WHERE board_seq = #{boardSeq}
+    </update>
+
+    <delete id="deleteBoard">
+        DELETE FROM board
+        WHERE board_seq = #{boardSeq}
+    </delete>
+</mapper>
