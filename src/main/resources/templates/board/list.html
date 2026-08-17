@@ -26,6 +26,7 @@
             <th>번호</th>
             <th>카테고리</th>
             <th>제목</th>
+            <th>글쓴이</th>
             <th>조회수</th>
             <th>작성일</th>
         </tr>
@@ -37,14 +38,29 @@
             <td>
                 <a th:href="@{/board/detail/{id}(id=${board.boardSeq})}" th:text="${board.boardTitle}"></a>
             </td>
+            <td th:text="${board.userName}"></td>
             <td th:text="${board.viewCount}"></td>
             <td th:text="${#temporals.format(board.boardWritedate, 'yyyy-MM-dd HH:mm')}"></td>
         </tr>
         <tr th:if="${#lists.isEmpty(boardList)}">
-            <td colspan="5">게시글이 없습니다.</td>
+            <td colspan="6">게시글이 없습니다.</td>
         </tr>
         </tbody>
     </table>
+    <div class="pagination">
+        <a th:if="${startPage > 1}"
+           th:href="@{/board/list(category=${selectedCategory}, page=${startPage - 1})}">&lt;</a>
+        <span th:unless="${startPage > 1}" class="disabled">&lt;</span>
+
+        <a th:each="i : ${#numbers.sequence(startPage, endPage)}"
+           th:href="@{/board/list(category=${selectedCategory}, page=${i})}"
+           th:text="${i}"
+           th:classappend="${i == currentPage} ? 'active' : ''"></a>
+
+        <a th:if="${endPage < totalPage}"
+           th:href="@{/board/list(category=${selectedCategory}, page=${endPage + 1})}">&gt;</a>
+        <span th:unless="${endPage < totalPage}" class="disabled">&gt;</span>
+    </div>
 
     <a class="btn" th:href="@{/board/write}">글쓰기</a>
 </main>

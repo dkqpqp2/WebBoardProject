@@ -16,6 +16,7 @@
         <h2 th:text="${board.boardTitle}"></h2>
         <p class="meta">
             <span th:text="${categoryMap.get(board.category)}"></span> ·
+            <span th:text="${board.userName}"></span> ·
             조회 <span th:text="${board.viewCount}"></span> ·
             <span th:text="${#temporals.format(board.boardWritedate, 'yyyy-MM-dd HH:mm')}"></span>
         </p>

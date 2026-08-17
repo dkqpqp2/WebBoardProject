@@ -10,6 +10,7 @@ import java.time.LocalDateTime;
 public class BoardVO {
     private int boardSeq;
     private int userSeq;
+    private String userName;
     private String category;
     private String boardTitle;
     private String boardContent;

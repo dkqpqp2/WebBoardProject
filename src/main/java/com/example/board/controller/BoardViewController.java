@@ -51,15 +51,26 @@ public class BoardViewController {
         return "redirect:/board/list";
     }
 
+    private static final int PAGE_BLOCK = 10;
+
     @GetMapping("/board/list")
-    public String list(@RequestParam(required = false) String category, Model model) {
+    public String list(@RequestParam(required = false) String category, @RequestParam(defaultValue = "1") int page, Model model) {
         List<BoardVO> boardList = (category == null || category.isBlank())
-                ? boardService.getBoardList()
-                : boardService.getBoardListByCategory(category);
+                ? boardService.getBoardList(page)
+                : boardService.getBoardListByCategoryPaged(category, page);
+
+        int totalPage = boardService.getTotalPage(category);
+        int startPage = ((page - 1) / PAGE_BLOCK) * PAGE_BLOCK + 1;
+        int endPage = Math.min(startPage + PAGE_BLOCK - 1, totalPage);
 
         model.addAttribute("boardList", boardList);
         model.addAttribute("categoryMap", CATEGORY_MAP);
         model.addAttribute("selectedCategory", category);
+        model.addAttribute("currentPage", page);
+        model.addAttribute("totalPage", totalPage);
+        model.addAttribute("startPage", startPage);
+        model.addAttribute("endPage", endPage);
+
         return "board/list";
     }
 

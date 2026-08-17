@@ -7,45 +7,51 @@
 
     <select id="getBoardList" resultType="BoardVO">
         SELECT
-            board_seq       AS boardSeq,
-            user_seq        AS userSeq,
-            category,
-            board_title     AS boardTitle,
-            board_content   AS boardContent,
-            view_count      AS viewCount,
-            board_writedate AS boardWritedate,
-            board_update    AS boardUpdate
-        FROM board
-        ORDER BY board_writedate DESC
+            b.board_seq       AS boardSeq,
+            b.user_seq        AS userSeq,
+            u.user_name       AS userName,
+            b.category,
+            b.board_title     AS boardTitle,
+            b.board_content   AS boardContent,
+            b.view_count      AS viewCount,
+            b.board_writedate AS boardWritedate,
+            b.board_update    AS boardUpdate
+        FROM board b
+        JOIN user u ON b.user_seq = u.user_seq
+        ORDER BY b.board_writedate DESC
     </select>
 
     <select id="getBoardListByCategory" resultType="BoardVO">
         SELECT
-            board_seq       AS boardSeq,
-            user_seq        AS userSeq,
-            category,
-            board_title     AS boardTitle,
-            board_content   AS boardContent,
-            view_count      AS viewCount,
-            board_writedate AS boardWritedate,
-            board_update    AS boardUpdate
-        FROM board
-        WHERE category = #{category}
-        ORDER BY board_writedate DESC
+            b.board_seq       AS boardSeq,
+            b.user_seq        AS userSeq,
+            u.user_name       AS userName,
+            b.category,
+            b.board_title     AS boardTitle,
+            b.board_content   AS boardContent,
+            b.view_count      AS viewCount,
+            b.board_writedate AS boardWritedate,
+            b.board_update    AS boardUpdate
+        FROM board b
+        JOIN user u ON b.user_seq = u.user_seq
+        WHERE b.category = #{category}
+        ORDER BY b.board_writedate DESC
     </select>
 
     <select id="getBoardDetail" resultType="BoardVO">
         SELECT
-            board_seq       AS boardSeq,
-            user_seq        AS userSeq,
-            category,
-            board_title     AS boardTitle,
-            board_content   AS boardContent,
-            view_count      AS viewCount,
-            board_writedate AS boardWritedate,
-            board_update    AS boardUpdate
-        FROM board
-        WHERE board_seq = #{boardSeq}
+            b.board_seq       AS boardSeq,
+            b.user_seq        AS userSeq,
+            u.user_name       AS userName,
+            b.category,
+            b.board_title     AS boardTitle,
+            b.board_content   AS boardContent,
+            b.view_count      AS viewCount,
+            b.board_writedate AS boardWritedate,
+            b.board_update    AS boardUpdate
+        FROM board b
+        JOIN user u ON b.user_seq = u.user_seq
+        WHERE b.board_seq = #{boardSeq}
     </select>
 
     <insert id="insertBoard" useGeneratedKeys="true" keyProperty="boardSeq">
@@ -71,4 +77,47 @@
         SET view_count = view_count + 1
         WHERE board_seq = #{boardSeq}
     </update>
+
+    <select id="getBoardListPaged" resultType="BoardVO">
+        SELECT
+            b.board_seq       AS boardSeq,
+            b.user_seq        AS userSeq,
+            u.user_name       AS userName,
+            b.category,
+            b.board_title     AS boardTitle,
+            b.board_content   AS boardContent,
+            b.view_count      AS viewCount,
+            b.board_writedate AS boardWritedate,
+            b.board_update    AS boardUpdate
+        FROM board b
+        JOIN user u ON b.user_seq = u.user_seq
+        ORDER BY b.board_writedate DESC
+        LIMIT #{size} OFFSET #{offset}
+    </select>
+
+    <select id="getBoardListByCategoryPaged" resultType="BoardVO">
+        SELECT
+            b.board_seq       AS boardSeq,
+            b.user_seq        AS userSeq,
+            u.user_name       AS userName,
+            b.category,
+            b.board_title     AS boardTitle,
+            b.board_content   AS boardContent,
+            b.view_count      AS viewCount,
+            b.board_writedate AS boardWritedate,
+            b.board_update    AS boardUpdate
+        FROM board b
+        JOIN user u ON b.user_seq = u.user_seq
+        WHERE b.category = #{category}
+        ORDER BY b.board_writedate DESC
+        LIMIT #{size} OFFSET #{offset}
+    </select>
+
+    <select id="getBoardCount" resultType="int">
+        SELECT COUNT(*) FROM board
+    </select>
+
+    <select id="getBoardCountByCategory" resultType="int">
+        SELECT COUNT(*) FROM board WHERE category = #{category}
+    </select>
 </mapper>
