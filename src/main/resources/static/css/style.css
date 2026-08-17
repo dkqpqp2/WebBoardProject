@@ -103,6 +103,16 @@ article .content { margin: 16px 0; line-height: 1.6; white-space: pre-wrap; }
 }
 .pagination a.active { background: #2f3b52; color: #fff; border-color: #2f3b52; }
 
+.search-form { display: flex; gap: 8px; margin-bottom: 16px; }
+.search-form select, .search-form input[type=text] {
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 14px;
+}
+.search-form input[type=text] { flex: 1; }
+.search-form button { margin-top: 0; }
+
 .pagination span.disabled {
     display: inline-block;
     padding: 6px 12px;

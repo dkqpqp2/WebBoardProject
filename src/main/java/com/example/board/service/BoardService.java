@@ -57,4 +57,14 @@ public class BoardService {
         return (int) Math.ceil((double) count / PAGE_SIZE);
     }
 
+    public List<BoardVO> searchBoardList(String keyword, String searchType, String category, int page) {
+        int offset = (page - 1) * PAGE_SIZE;
+        return boardMapper.getBoardSearchList(keyword, searchType, category, offset, PAGE_SIZE);
+    }
+
+    public int getSearchTotalPage(String keyword, String searchType, String category) {
+        int count = boardMapper.getBoardSearchCount(keyword, searchType, category);
+        return (int) Math.ceil((double) count / PAGE_SIZE);
+    }
+
 }

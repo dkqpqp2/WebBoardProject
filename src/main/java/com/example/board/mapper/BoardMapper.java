@@ -20,5 +20,9 @@ public interface BoardMapper {
     List<BoardVO> getBoardListByCategoryPaged(@Param("category") String category, @Param("offset") int offset, @Param("size") int size);
     int getBoardCount();
     int getBoardCountByCategory(String category);
+    List<BoardVO> getBoardSearchList(@Param("keyword") String keyword, @Param("searchType") String searchType, @Param("category") String category, @Param("offset") int offset, @Param("size") int size);
+    int getBoardSearchCount(@Param("keyword") String keyword, @Param("searchType") String searchType, @Param("category") String category);
+
+
 
 }
