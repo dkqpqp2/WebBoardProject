@@ -11,6 +11,7 @@ import java.time.LocalDateTime;
 public class CommentVO {
     private int commentSeq;
     private int userSeq;
+    private String userName;
     private int boardSeq;
     private String commentContent;
     private LocalDateTime commentWritedate;

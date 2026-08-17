@@ -34,6 +34,7 @@
         <h3>댓글 <span th:text="${#lists.size(commentList)}"></span></h3>
         <ul>
             <li th:each="comment : ${commentList}">
+                <span class="meta" th:text="${comment.userName}"></span>
                 <span th:text="${comment.commentContent}"></span>
                 <span class="meta" th:text="${#temporals.format(comment.commentWritedate, 'yyyy-MM-dd HH:mm')}"></span>
                 <form th:action="@{/board/{boardSeq}/comment/{commentSeq}/delete(boardSeq=${board.boardSeq},commentSeq=${comment.commentSeq})}"

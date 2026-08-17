@@ -7,15 +7,17 @@
 
     <select id="getCommentList" resultType="CommentVO">
         SELECT
-            comment_seq       AS commentSeq,
-            user_seq          AS userSeq,
-            board_seq         AS boardSeq,
-            comment_content   AS commentContent,
-            comment_writedate AS commentWritedate,
-            comment_update    AS commentUpdate
-        FROM comment
-        WHERE board_seq = #{boardSeq}
-        ORDER BY comment_writedate ASC
+            c.comment_seq       AS commentSeq,
+            c.user_seq          AS userSeq,
+            u.user_name         AS userName,
+            c.board_seq         AS boardSeq,
+            c.comment_content   AS commentContent,
+            c.comment_writedate AS commentWritedate,
+            c.comment_update    AS commentUpdate
+        FROM comment c
+        JOIN user u ON c.user_seq = u.user_seq
+        WHERE c.board_seq = #{boardSeq}
+        ORDER BY c.comment_writedate ASC
     </select>
 
     <insert id="insertComment" useGeneratedKeys="true" keyProperty="commentSeq">
