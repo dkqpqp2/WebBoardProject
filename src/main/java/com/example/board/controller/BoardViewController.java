@@ -54,18 +54,36 @@ public class BoardViewController {
     private static final int PAGE_BLOCK = 10;
 
     @GetMapping("/board/list")
-    public String list(@RequestParam(required = false) String category, @RequestParam(defaultValue = "1") int page, Model model) {
-        List<BoardVO> boardList = (category == null || category.isBlank())
-                ? boardService.getBoardList(page)
-                : boardService.getBoardListByCategoryPaged(category, page);
+    public String list(@RequestParam(required = false) String category,
+                        @RequestParam(required = false) String keyword,
+                        @RequestParam(required = false) String searchType,
+                        @RequestParam(defaultValue = "1") int page,
+                        Model model) {
 
-        int totalPage = boardService.getTotalPage(category);
+        boolean isSearch = keyword != null && !keyword.isBlank();
+
+        List<BoardVO> boardList;
+        int totalPage;
+
+        if (isSearch) {
+            boardList = boardService.searchBoardList(keyword, searchType, category, page);
+            totalPage = boardService.getSearchTotalPage(keyword, searchType, category);
+        } else if (category == null || category.isBlank()) {
+            boardList = boardService.getBoardList(page);
+            totalPage = boardService.getTotalPage(category);
+        } else {
+            boardList = boardService.getBoardListByCategoryPaged(category, page);
+            totalPage = boardService.getTotalPage(category);
+        }
+
         int startPage = ((page - 1) / PAGE_BLOCK) * PAGE_BLOCK + 1;
         int endPage = Math.min(startPage + PAGE_BLOCK - 1, totalPage);
 
         model.addAttribute("boardList", boardList);
         model.addAttribute("categoryMap", CATEGORY_MAP);
         model.addAttribute("selectedCategory", category);
+        model.addAttribute("keyword", keyword);
+        model.addAttribute("searchType", searchType);
         model.addAttribute("currentPage", page);
         model.addAttribute("totalPage", totalPage);
         model.addAttribute("startPage", startPage);
