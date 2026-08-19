@@ -20,6 +20,20 @@
         ORDER BY c.comment_writedate ASC
     </select>
 
+    <select id="getCommentById" resultType="CommentVO">
+        SELECT
+            c.comment_seq       AS commentSeq,
+            c.user_seq          AS userSeq,
+            u.user_name         AS userName,
+            c.board_seq         AS boardSeq,
+            c.comment_content   AS commentContent,
+            c.comment_writedate AS commentWritedate,
+            c.comment_update    AS commentUpdate
+        FROM comment c
+        JOIN user u ON c.user_seq = u.user_seq
+        WHERE c.comment_seq = #{commentSeq}
+    </select>
+
     <insert id="insertComment" useGeneratedKeys="true" keyProperty="commentSeq">
         INSERT INTO comment (user_seq, board_seq, comment_content)
         VALUES (#{userSeq}, #{boardSeq}, #{commentContent})

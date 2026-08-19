@@ -164,8 +164,10 @@ public class BoardViewController {
 
     @PostMapping("/board/{boardSeq}/comment/{commentSeq}/delete")
     public String deleteComment(@PathVariable int boardSeq, @PathVariable int commentSeq, HttpSession session) {
-        if (getLoginUser(session) == null) {
-            return "redirect:/user/login";
+        UserVO loginUser = getLoginUser(session);
+        CommentVO comment = commentService.getCommentById(commentSeq);
+        if (loginUser == null || comment == null || loginUser.getUserSeq() != comment.getUserSeq()) {
+            return "redirect:/board/detail/" + boardSeq;
         }
         commentService.deleteComment(commentSeq);
         return "redirect:/board/detail/" + boardSeq;

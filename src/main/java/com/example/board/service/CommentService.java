@@ -17,6 +17,10 @@ public class CommentService {
         return commentMapper.getCommentList(boardSeq);
     }
 
+    public CommentVO getCommentById(int commentSeq) {
+        return commentMapper.getCommentById(commentSeq);
+    }
+
     public int insertComment(CommentVO commentVO) {
         commentMapper.insertComment(commentVO);
         return commentVO.getCommentSeq();
