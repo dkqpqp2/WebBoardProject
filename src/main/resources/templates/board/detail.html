@@ -37,7 +37,8 @@
                 <span class="meta" th:text="${comment.userName}"></span>
                 <span th:text="${comment.commentContent}"></span>
                 <span class="meta" th:text="${#temporals.format(comment.commentWritedate, 'yyyy-MM-dd HH:mm')}"></span>
-                <form th:action="@{/board/{boardSeq}/comment/{commentSeq}/delete(boardSeq=${board.boardSeq},commentSeq=${comment.commentSeq})}"
+                <form th:if="${loginUser != null and loginUser.userSeq == comment.userSeq}"
+                      th:action="@{/board/{boardSeq}/comment/{commentSeq}/delete(boardSeq=${board.boardSeq},commentSeq=${comment.commentSeq})}"
                       method="post" style="display:inline">
                     <button type="submit" onclick="return confirm('댓글을 삭제하시겠습니까?')">삭제</button>
                 </form>
@@ -45,12 +46,29 @@
             <li th:if="${#lists.isEmpty(commentList)}">아직 댓글이 없습니다.</li>
         </ul>
 
-        <form th:if="${loginUser != null}" th:action="@{/board/{id}/comment(id=${board.boardSeq})}" method="post">
-            <textarea name="commentContent" rows="2" placeholder="댓글을 입력하세요" required></textarea>
-            <button type="submit">댓글 등록</button>
+        <form th:if="${loginUser != null}" th:action="@{/board/{id}/comment(id=${board.boardSeq})}" method="post" class="comment-form">
+            <div class="comment-box">
+                <textarea name="commentContent" id="commentContent" maxlength="500" placeholder="댓글을 입력하세요" required></textarea>
+                <div class="comment-box-footer">
+                    <span class="char-count"><span id="charCount">0</span>/500</span>
+                    <button type="submit" class="comment-submit" aria-label="댓글 등록">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+                    </button>
+                </div>
+            </div>
         </form>
         <p th:if="${loginUser == null}"><a th:href="@{/user/login}">로그인</a> 후 댓글을 작성할 수 있습니다.</p>
     </section>
 </main>
+
+<script>
+    const commentTextarea = document.getElementById('commentContent');
+    const charCount = document.getElementById('charCount');
+    if (commentTextarea) {
+        commentTextarea.addEventListener('input', () => {
+            charCount.textContent = commentTextarea.value.length;
+        });
+    }
+</script>
 </body>
 </html>
