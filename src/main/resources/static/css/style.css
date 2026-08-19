@@ -89,7 +89,7 @@ article .content { margin: 16px 0; line-height: 1.6; white-space: pre-wrap; }
 .comments ul { list-style: none; padding: 0; }
 .comments li { padding: 10px 0; border-bottom: 1px solid #eee; font-size: 14px; }
 .comments form { margin-top: 16px; }
-.comments textarea { width: 100%; }
+.comments textarea { width: 100%; resize: none; }
 
 .pagination { margin-top: 16px; text-align: center; }
 .pagination a {
