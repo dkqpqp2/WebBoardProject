@@ -90,6 +90,23 @@ article .content { margin: 16px 0; line-height: 1.6; white-space: pre-wrap; }
 .comments li { padding: 10px 0; border-bottom: 1px solid #eee; font-size: 14px; }
 .comments form { margin-top: 16px; }
 
+.comment-header { display: flex; align-items: baseline; gap: 8px; }
+.comment-author { font-weight: 500; font-size: 14px; color: #222; }
+.comment-date { font-size: 12px; color: #999; flex: 1; }
+.comment-delete-form { margin: 0; }
+.comment-delete-btn {
+    background: none;
+    border: none;
+    padding: 0;
+    margin: 0;
+    color: #999;
+    font-size: 12px;
+    text-decoration: underline;
+    cursor: pointer;
+}
+.comment-delete-btn:hover { background: none; color: #c0392b; }
+.comment-body { margin: 4px 0 0; font-size: 14px; color: #333; line-height: 1.5; }
+
 .comment-box {
     border: 1px solid #ccc;
     border-radius: 8px;

@@ -34,14 +34,16 @@
         <h3>댓글 <span th:text="${#lists.size(commentList)}"></span></h3>
         <ul>
             <li th:each="comment : ${commentList}">
-                <span class="meta" th:text="${comment.userName}"></span>
-                <span th:text="${comment.commentContent}"></span>
-                <span class="meta" th:text="${#temporals.format(comment.commentWritedate, 'yyyy-MM-dd HH:mm')}"></span>
-                <form th:if="${loginUser != null and loginUser.userSeq == comment.userSeq}"
-                      th:action="@{/board/{boardSeq}/comment/{commentSeq}/delete(boardSeq=${board.boardSeq},commentSeq=${comment.commentSeq})}"
-                      method="post" style="display:inline">
-                    <button type="submit" onclick="return confirm('댓글을 삭제하시겠습니까?')">삭제</button>
-                </form>
+                <div class="comment-header">
+                    <span class="comment-author" th:text="${comment.userName}"></span>
+                    <span class="comment-date" th:text="${#temporals.format(comment.commentWritedate, 'yyyy-MM-dd HH:mm')}"></span>
+                    <form th:if="${loginUser != null and loginUser.userSeq == comment.userSeq}"
+                          th:action="@{/board/{boardSeq}/comment/{commentSeq}/delete(boardSeq=${board.boardSeq},commentSeq=${comment.commentSeq})}"
+                          method="post" class="comment-delete-form">
+                        <button type="submit" class="comment-delete-btn" onclick="return confirm('댓글을 삭제하시겠습니까?')">삭제</button>
+                    </form>
+                </div>
+                <div class="comment-body" th:text="${comment.commentContent}"></div>
             </li>
             <li th:if="${#lists.isEmpty(commentList)}">아직 댓글이 없습니다.</li>
         </ul>
