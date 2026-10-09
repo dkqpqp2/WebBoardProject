@@ -49,6 +49,6 @@ user, board, comment 3개이고, 생성 쿼리는 `sql/schema.sql`에 있습니�
 
 ## 아쉬운 점 / 앞으로 할 것
 
-- 테스트 코드가 아직 없습니다. (`contextLoads` 하나뿐)
+- Service, Controller 단위 테스트는 작성했지만(Mockito, MockMvc), DB까지 연결해서 보는 Mapper 테스트는 아직 없습니다.
 - Spring Security 없이 세션 값을 직접 비교하는 방식이라 CSRF 방어는 넣지 않았습니다.
 - 배포는 아직 안 했습니다.
