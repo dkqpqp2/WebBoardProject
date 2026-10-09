@@ -122,7 +122,7 @@ public class BoardViewController {
 
     @GetMapping("/board/edit/{boardSeq}")
     public String editForm(@PathVariable int boardSeq, Model model, HttpSession session) {
-        BoardVO board = boardService.getBoardDetail(boardSeq);
+        BoardVO board = boardService.getBoard(boardSeq);
         if (!isOwner(session, board)) {
             return "redirect:/board/detail/" + boardSeq;
         }
@@ -133,7 +133,7 @@ public class BoardViewController {
 
     @PostMapping("/board/edit/{boardSeq}")
     public String edit(@PathVariable int boardSeq, @ModelAttribute BoardVO boardVO, HttpSession session) {
-        if (!isOwner(session, boardService.getBoardDetail(boardSeq))) {
+        if (!isOwner(session, boardService.getBoard(boardSeq))) {
             return "redirect:/board/detail/" + boardSeq;
         }
         boardVO.setBoardSeq(boardSeq);
@@ -143,7 +143,7 @@ public class BoardViewController {
 
     @PostMapping("/board/delete/{boardSeq}")
     public String delete(@PathVariable int boardSeq, HttpSession session) {
-        if (!isOwner(session, boardService.getBoardDetail(boardSeq))) {
+        if (!isOwner(session, boardService.getBoard(boardSeq))) {
             return "redirect:/board/detail/" + boardSeq;
         }
         boardService.deleteBoard(boardSeq);
@@ -179,6 +179,6 @@ public class BoardViewController {
 
     private boolean isOwner(HttpSession session, BoardVO board) {
         UserVO loginUser = getLoginUser(session);
-        return loginUser != null && loginUser.getUserSeq() == board.getUserSeq();
+        return loginUser != null && board != null && loginUser.getUserSeq() == board.getUserSeq();
     }
 }

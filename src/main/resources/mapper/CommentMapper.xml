@@ -49,4 +49,9 @@
         DELETE FROM comment
         WHERE comment_seq = #{commentSeq}
     </delete>
+
+    <delete id="deleteCommentsByBoardSeq">
+        DELETE FROM comment
+        WHERE board_seq = #{boardSeq}
+    </delete>
 </mapper>

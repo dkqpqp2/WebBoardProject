@@ -12,4 +12,5 @@ public interface CommentMapper {
     void insertComment(CommentVO commentVO);
     void updateComment(CommentVO commentVO);
     void deleteComment(int commentSeq);
+    void deleteCommentsByBoardSeq(int boardSeq);
 }
