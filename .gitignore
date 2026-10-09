@@ -38,3 +38,8 @@ out/
 
 ### Local secrets ###
 src/main/resources/application.properties
+
+### Personal notes ###
+STUDY_NOTES.txt
+INTERVIEW_PREP.txt
+면접답변.txt
