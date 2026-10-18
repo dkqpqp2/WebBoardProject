@@ -150,6 +150,9 @@ article .content { margin: 16px 0; line-height: 1.6; white-space: pre-wrap; }
 }
 .comment-submit:hover { background: #4a5a7a; }
 
+.like-btn { background: #fff; color: #555; border: 1px solid #ccc; }
+.like-btn.liked { color: #e0245e; border-color: #e0245e; }
+
 .pagination { margin-top: 16px; text-align: center; }
 .pagination a {
     display: inline-block;

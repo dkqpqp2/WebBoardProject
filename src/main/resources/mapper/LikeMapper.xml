@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.board.mapper.LikeMapper">
+    <insert id="insertLike">
+        INSERT INTO board_like (user_seq, board_seq)
+        VALUES (#{userSeq}, #{boardSeq})
+    </insert>
+
+    <delete id="deleteLike">
+        DELETE FROM board_like
+        WHERE user_seq = #{userSeq}
+        AND board_seq = #{boardSeq}
+    </delete>
+
+    <select id="countLikes" resultType="int">
+        SELECT COUNT(*)
+        FROM board_like
+        WHERE board_seq = #{boardSeq}
+    </select>
+
+    <select id="existsLike" resultType="int">
+        SELECT COUNT(*)
+        FROM board_like
+        WHERE user_seq = #{userSeq}
+        AND board_seq = #{boardSeq}
+    </select>
+
+    <delete id="deleteLikesByBoardSeq">
+        DELETE FROM board_like
+        WHERE board_seq = #{boardSeq}
+    </delete>
+</mapper>

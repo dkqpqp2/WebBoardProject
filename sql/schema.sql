@@ -39,3 +39,14 @@ CREATE TABLE `comment` (
   CONSTRAINT `comment_ibfk_1` FOREIGN KEY (`user_seq`) REFERENCES `user` (`user_seq`),
   CONSTRAINT `comment_ibfk_2` FOREIGN KEY (`board_seq`) REFERENCES `board` (`board_seq`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+CREATE TABLE `board_like` (
+                              `like_seq` int NOT NULL AUTO_INCREMENT,
+                              `user_seq` int NOT NULL,
+                              `board_seq` int NOT NULL,
+                              `like_date` datetime DEFAULT CURRENT_TIMESTAMP,
+                              PRIMARY KEY (`like_seq`),
+                              UNIQUE KEY (`user_seq`, `board_seq`),
+                              FOREIGN KEY (`user_seq`) REFERENCES `user` (`user_seq`),
+                              FOREIGN KEY (`board_seq`) REFERENCES `board` (`board_seq`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;

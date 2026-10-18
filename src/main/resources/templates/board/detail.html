@@ -28,6 +28,12 @@
                 <button type="submit" onclick="return confirm('삭제하시겠습니까?')">삭제</button>
             </form>
         </div>
+
+        <div class="like-box">
+            <button type="button" id="likeBtn" class="like-btn">
+                <span id="likeIcon">♡</span> <span id="likeCount">0</span>
+            </button>
+        </div>
     </article>
 
     <section class="comments">
@@ -62,6 +68,35 @@
         <p th:if="${loginUser == null}"><a th:href="@{/user/login}">로그인</a> 후 댓글을 작성할 수 있습니다.</p>
     </section>
 </main>
+
+<script th:inline="javascript">
+    const boardSeq = [[${board.boardSeq}]];
+    const likeBtn = document.getElementById('likeBtn');
+    const likeIcon = document.getElementById('likeIcon');
+    const likeCount = document.getElementById('likeCount');
+
+    function render(data) {
+        likeCount.textContent = data.likeCount;
+        likeIcon.textContent = data.liked ? '♥' : '♡';
+        likeBtn.classList.toggle('liked', data.liked);
+    }
+
+    fetch('/api/board/' + boardSeq + '/like')
+        .then(res => res.json())
+        .then(data => render(data));
+
+    likeBtn.addEventListener('click', () => {
+        fetch('/api/board/' + boardSeq + '/like', { method: 'POST' })
+            .then(res => {
+                if (res.status === 401) {
+                    location.href = '/user/login';
+                    return;
+                }
+                return res.json();
+            })
+            .then(data => { if (data) render(data); });
+    });
+</script>
 
 <script>
     const commentTextarea = document.getElementById('commentContent');
