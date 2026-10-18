@@ -2,6 +2,7 @@ package com.example.board.service;
 
 import com.example.board.mapper.BoardMapper;
 import com.example.board.mapper.CommentMapper;
+import com.example.board.mapper.LikeMapper;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -21,6 +22,9 @@ public class BoardServiceTest {
 
     @Mock
     CommentMapper commentMapper;
+
+    @Mock
+    LikeMapper likeMapper;
 
     @InjectMocks
     BoardService boardService;
@@ -64,11 +68,12 @@ public class BoardServiceTest {
     }
 
     @Test
-    @DisplayName("글 삭제하면 댓글도 같이 삭제")
+    @DisplayName("글 삭제하면 댓글, 좋아요도 같이 삭제")
     void deleteBoardWithComments(){
         boardService.deleteBoard(7);
 
         verify(commentMapper).deleteCommentsByBoardSeq(7);
+        verify(likeMapper).deleteLikesByBoardSeq(7);
         verify(boardMapper).deleteBoard(7);
     }
 }

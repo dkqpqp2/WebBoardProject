@@ -2,6 +2,7 @@ package com.example.board.service;
 
 import com.example.board.mapper.BoardMapper;
 import com.example.board.mapper.CommentMapper;
+import com.example.board.mapper.LikeMapper;
 import com.example.board.vo.BoardVO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -15,6 +16,7 @@ public class BoardService {
 
     private final BoardMapper boardMapper;
     private final CommentMapper commentMapper;
+    private final LikeMapper likeMapper;
     private static final int PAGE_SIZE = 10;
 
     public List<BoardVO> getBoardList(){
@@ -46,6 +48,7 @@ public class BoardService {
     @Transactional
     public void deleteBoard(int boardSeq) {
         commentMapper.deleteCommentsByBoardSeq(boardSeq);
+        likeMapper.deleteLikesByBoardSeq(boardSeq);
         boardMapper.deleteBoard(boardSeq);
     }
 
