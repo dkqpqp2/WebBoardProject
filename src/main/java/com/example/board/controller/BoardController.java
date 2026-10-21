@@ -4,6 +4,7 @@ import com.example.board.service.BoardService;
 import com.example.board.vo.BoardVO;
 import com.example.board.vo.UserVO;
 import jakarta.servlet.http.HttpSession;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -32,14 +33,14 @@ public class BoardController {
     }
 
     @PostMapping("/write")
-    public int insertBoard(@RequestBody BoardVO boardVO, HttpSession session) {
+    public int insertBoard(@Valid @RequestBody BoardVO boardVO, HttpSession session) {
         UserVO loginUser = requireLogin(session);
         boardVO.setUserSeq(loginUser.getUserSeq());
         return boardService.insertBoard(boardVO);
     }
 
     @PutMapping("/{boardSeq}")
-    public void updateBoard(@PathVariable int boardSeq, @RequestBody BoardVO boardVO, HttpSession session) {
+    public void updateBoard(@PathVariable int boardSeq, @Valid @RequestBody BoardVO boardVO, HttpSession session) {
         requireOwner(session, boardSeq);
         boardVO.setBoardSeq(boardSeq);
         boardService.updateBoard(boardVO);

@@ -4,6 +4,7 @@ import com.example.board.service.CommentService;
 import com.example.board.vo.CommentVO;
 import com.example.board.vo.UserVO;
 import jakarta.servlet.http.HttpSession;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -23,7 +24,7 @@ public class CommentController {
     }
 
     @PostMapping("/api/board/{boardSeq}/comment")
-    public int insertComment(@PathVariable int boardSeq, @RequestBody CommentVO commentVO, HttpSession session) {
+    public int insertComment(@PathVariable int boardSeq, @Valid @RequestBody CommentVO commentVO, HttpSession session) {
         UserVO loginUser = requireLogin(session);
         commentVO.setBoardSeq(boardSeq);
         commentVO.setUserSeq(loginUser.getUserSeq());
@@ -31,7 +32,7 @@ public class CommentController {
     }
 
     @PutMapping("/api/comment/{commentSeq}")
-    public void updateComment(@PathVariable int commentSeq, @RequestBody CommentVO commentVO, HttpSession session) {
+    public void updateComment(@PathVariable int commentSeq, @Valid @RequestBody CommentVO commentVO, HttpSession session) {
         requireOwner(session, commentSeq);
         commentVO.setCommentSeq(commentSeq);
         commentService.updateComment(commentVO);
