@@ -10,13 +10,16 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @ExtendWith({MockitoExtension.class})
@@ -31,8 +34,8 @@ public class CommentControllerTest {
     MockMvc mockMvc;
 
     @BeforeEach
-    void setUp(){
-        mockMvc = MockMvcBuilders.standaloneSetup(commentController).build();
+    void setUp() {
+        mockMvc = MockMvcBuilders.standaloneSetup(commentController).setControllerAdvice(new GlobalExceptionHandler()).build();
     }
 
     @Test
@@ -40,6 +43,17 @@ public class CommentControllerTest {
     void deleteWithoutLogin() throws Exception {
         mockMvc.perform(delete("/api/comment/3"))
                 .andExpect(status().isUnauthorized());
+    }
+
+    @Test
+    @DisplayName("댓글 비어있으면 400")
+    void writeWithEmptyComment() throws Exception {
+         mockMvc.perform(post("/api/board/5/comment")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content("{\"commentContent\":\"\"}"))
+            .andExpect(status().isBadRequest());
+
+         verify(commentService, never()).insertComment(any());
     }
 
     @Test

@@ -36,7 +36,8 @@ public class BoardControllerTest {
 
     @BeforeEach
     void setUp(){
-        mockMvc = MockMvcBuilders.standaloneSetup(boardController).build();
+
+        mockMvc = MockMvcBuilders.standaloneSetup(boardController).setControllerAdvice(new GlobalExceptionHandler()).build();
     }
 
     @Test
@@ -46,6 +47,17 @@ public class BoardControllerTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("{\"category\":\"FREE\",\"boardTitle\":\"제목\",\"boardContent\":\"내용\"}"))
                 .andExpect(status().isUnauthorized());
+    }
+
+    @Test
+    @DisplayName("제목이 비어 있으면 400")
+    void writeWithEmptyTitle() throws Exception {
+        mockMvc.perform(post("/api/board/write")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{\"category\":\"FREE\",\"boardTitle\":\"\",\"boardContent\":\"내용\"}"))
+                        .andExpect(status().isBadRequest());
+
+        verify(boardService, never()).insertBoard(any());
     }
 
     @Test
